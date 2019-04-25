@@ -11,6 +11,7 @@ except ImportError:
     from urllib.parse import quote
 
 import requests
+import html
 
 from . import config
 
@@ -71,7 +72,7 @@ def emoji_formatter(d, k):
 def msg_formatter(d, k):
     emoji_formatter(d, k)
     d[k] = d[k].replace('<br/>', '\n')
-    d[k]  = htmlParser.unescape(d[k])
+    d[k]  = html.unescape(d[k])
 
 def check_file(fileDir):
     try:

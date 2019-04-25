@@ -93,15 +93,15 @@ def produce_msg(core, msgList):
                 '%s/webwxgetmsgimg' % core.loginInfo['url'], m['NewMsgId'])
             msg = {
                 'Type'     : 'Picture',
-                'FileName' : '%s.%s' % (time.strftime('%y%m%d-%H%M%S', time.localtime()),
-                    'png' if m['MsgType'] == 3 else 'gif'),
+                'FileName' : '%s_%s.%s' % (time.strftime('%y%m%d-%H%M%S', time.localtime()), m['MsgId'],
+                    'jpg' if m['MsgType'] == 3 else 'gif'),
                 'Text'     : download_fn, }
         elif m['MsgType'] == 34: # voice
             download_fn = get_download_fn(core,
                 '%s/webwxgetvoice' % core.loginInfo['url'], m['NewMsgId'])
             msg = {
                 'Type': 'Recording',
-                'FileName' : '%s.mp3' % time.strftime('%y%m%d-%H%M%S', time.localtime()),
+                'FileName' : '%s_%s.mp3' % (time.strftime('%y%m%d-%H%M%S', time.localtime()), m['MsgId']),
                 'Text': download_fn,}
         elif m['MsgType'] == 37: # friends
             m['User']['UserName'] = m['RecommendInfo']['UserName']
@@ -138,7 +138,7 @@ def produce_msg(core, msgList):
                     'Ret': 0, }})
             msg = {
                 'Type': 'Video',
-                'FileName' : '%s.mp4' % time.strftime('%y%m%d-%H%M%S', time.localtime()),
+                'FileName' : '%s_%s.mp4' % (time.strftime('%y%m%d-%H%M%S', time.localtime()), m['MsgId']),
                 'Text': download_video, }
         elif m['MsgType'] == 49: # sharing
             if m['AppMsgType'] == 0: # chat history
@@ -198,7 +198,7 @@ def produce_msg(core, msgList):
                 msg = {
                     'Type': 'Sharing',
                     'Text': m['FileName'], }
-        elif m['MsgType'] == 51: # phone init
+        elif m['MsgType'] == 51 and m['Content']: # phone init
             msg = update_local_uin(core, m)
         elif m['MsgType'] == 10000:
             msg = {
